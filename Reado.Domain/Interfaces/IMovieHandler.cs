@@ -1,0 +1,18 @@
+using Reado.Domain.Entities;
+using Reado.Domain.Request.Movies;
+using Reado.Domain.Responses;
+
+namespace Reado.Domain.Interfaces;
+
+public interface IMovieHandler
+{
+    Task<Response<Movie?>> CreateAsync(CreateMovieRequest request);
+
+    Task<Response<Movie?>> GetByIdAsync(GetMovieByIdRequest request);
+
+    Task<Response<List<Movie>>> GetAllAsync(GetAllMoviesRequest request);
+
+    Task<Response<Movie?>> UpdateAsync(CreateMovieRequest request);
+
+    Task<Response<bool>> DeleteAsync(DeleteMovieRequest request);
+}
