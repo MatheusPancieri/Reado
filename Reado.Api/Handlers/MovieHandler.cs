@@ -98,7 +98,7 @@ public class MovieHandler(AppDbContext context) : IMovieHandler
         }
     }
 
-    public async Task<Response<Movie?>> UpdateAsync(CreateMovieRequest request)
+    public async Task<Response<Movie?>> UpdateAsync(UpdateMovieRequest request)
     {
         try
         {

@@ -12,7 +12,7 @@ public interface IMovieHandler
 
     Task<PageResponse<List<Movie>>> GetAllAsync(GetAllMoviesRequest request);
 
-    Task<Response<Movie?>> UpdateAsync(CreateMovieRequest request);
+    Task<Response<Movie?>> UpdateAsync(UpdateMovieRequest request);
 
     Task<Response<bool>> DeleteAsync(DeleteMovieRequest request);
 }
