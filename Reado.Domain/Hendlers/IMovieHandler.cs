@@ -10,7 +10,7 @@ public interface IMovieHandler
 
     Task<Response<Movie?>> GetByIdAsync(GetMovieByIdRequest request);
 
-    Task<Response<List<Movie>>> GetAllAsync(GetAllMoviesRequest request);
+    Task<PageResponse<List<Movie>>> GetAllAsync(GetAllMoviesRequest request);
 
     Task<Response<Movie?>> UpdateAsync(CreateMovieRequest request);
 

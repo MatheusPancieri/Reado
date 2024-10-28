@@ -10,10 +10,10 @@ public interface IBookHandler
 
    Task<Response<Book?>> GetByIdAsync(GetBookByIdRequest request);
 
-   Task<Response<List<Book>>> GetAllAsync(GetAllBooksRequest request);
+   Task<PageResponse<List<Book>>> GetAllAsync(GetAllBooksRequest request);
 
    Task<Response<Book?>> UpdateAsync(CreateBookRequest request);
 
-   Task<Response<bool>> DeleteAsync(DeleteBookRequest request);
+   Task<Response<Book?>> DeleteAsync(DeleteBookRequest request);
 
 }
