@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Reado.Domain.Request.Books;
 
-public class GetAllBooksRequest : Request
+public class GetAllBooksRequest : PageRequest
 {
     
 }

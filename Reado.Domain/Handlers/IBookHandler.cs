@@ -2,7 +2,7 @@ using Reado.Domain.Entities;
 using Reado.Domain.Request.Books;
 using Reado.Domain.Responses;
 
-namespace Reado.Domain.Interfaces;
+namespace Reado.Domain.Handlers;
 
 public interface IBookHandler
 {
@@ -10,9 +10,9 @@ public interface IBookHandler
 
    Task<Response<Book?>> GetByIdAsync(GetBookByIdRequest request);
 
-   Task<Response<List<Book>>> GetAllAsync(GetAllBooksRequest request);
+   Task<PageResponse<List<Book>>> GetAllAsync(GetAllBooksRequest request);
 
-   Task<Response<Book?>> UpdateAsync(CreateBookRequest request);
+   Task<Response<Book?>> UpdateAsync(UpdateBookRequest request);
 
    Task<Response<bool>> DeleteAsync(DeleteBookRequest request);
 

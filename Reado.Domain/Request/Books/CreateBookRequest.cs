@@ -20,6 +20,5 @@ public class CreateBookRequest : Request
 
     [Required(ErrorMessage = "A data de publicação é obrigatória.")]
     public DateTime PublicationDate { get; set; }
-
-    public double? Rating { get; set; }  
+    public float Rating { get; set; }  
 }

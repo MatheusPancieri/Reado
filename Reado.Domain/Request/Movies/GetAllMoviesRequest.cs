@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Reado.Domain.Request.Movies;
 
-public class GetAllMoviesRequest : Request
+public class GetAllMoviesRequest : PageRequest
 {
-    
+
 }
