@@ -1,4 +1,4 @@
-namespace Dima.Core.Models.Account;
+namespace Reado.Domain.Entities.Account;
 
 public class RoleClaim
 {

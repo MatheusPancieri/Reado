@@ -1,12 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "A5ASlndkL2w=",
+  "dgSpecHash": "w6CZB/6Wc2c=",
   "success": true,
   "projectFilePath": "C:\\Users\\estagioCotin2\\Documents\\EstudosVS\\C#\\Reado\\Reado.Api\\Reado.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.10\\microsoft.aspnetcore.cryptography.internal.8.0.10.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\8.0.10\\microsoft.aspnetcore.cryptography.keyderivation.8.0.10.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\8.0.10\\microsoft.aspnetcore.identity.entityframeworkcore.8.0.10.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.10\\microsoft.aspnetcore.openapi.8.0.10.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.codeanalysis.common\\4.5.0\\microsoft.codeanalysis.common.4.5.0.nupkg.sha512",
@@ -29,6 +33,8 @@
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.1\\microsoft.extensions.dependencyinjection.8.0.1.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.dependencymodel\\8.0.2\\microsoft.extensions.dependencymodel.8.0.2.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.identity.core\\8.0.10\\microsoft.extensions.identity.core.8.0.10.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.identity.stores\\8.0.10\\microsoft.extensions.identity.stores.8.0.10.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.logging\\8.0.1\\microsoft.extensions.logging.8.0.1.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
@@ -85,17 +91,17 @@
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.7\\microsoft.netcore.app.ref.8.0.7.nupkg.sha512",
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.7\\microsoft.windowsdesktop.app.ref.8.0.7.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.7\\microsoft.aspnetcore.app.ref.8.0.7.nupkg.sha512",
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.7\\microsoft.netcore.app.host.win-x64.8.0.7.nupkg.sha512"
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.7\\microsoft.netcore.app.host.win-x64.8.0.7.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.7\\microsoft.netcore.app.ref.8.0.7.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.7\\microsoft.windowsdesktop.app.ref.8.0.7.nupkg.sha512"
   ],
   "logs": [
     {
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Azure.Identity' 1.10.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9",
+      "message": "O pacote 'Azure.Identity' 1.10.3 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9",
       "libraryId": "Azure.Identity",
       "targetGraphs": [
         "net8.0"
@@ -105,7 +111,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Azure.Identity' 1.10.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-wvxc-855f-jvrv",
+      "message": "O pacote 'Azure.Identity' 1.10.3 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-wvxc-855f-jvrv",
       "libraryId": "Azure.Identity",
       "targetGraphs": [
         "net8.0"
@@ -115,7 +121,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.Identity.Client' 4.56.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9",
+      "message": "O pacote 'Microsoft.Identity.Client' 4.56.0 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-m5vv-6r4h-3vj9",
       "libraryId": "Microsoft.Identity.Client",
       "targetGraphs": [
         "net8.0"
@@ -125,7 +131,7 @@
       "code": "NU1901",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.Identity.Client' 4.56.0 has a known low severity vulnerability, https://github.com/advisories/GHSA-x674-v45j-fwxw",
+      "message": "O pacote 'Microsoft.Identity.Client' 4.56.0 tem uma baixa vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-x674-v45j-fwxw",
       "libraryId": "Microsoft.Identity.Client",
       "targetGraphs": [
         "net8.0"
@@ -135,7 +141,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'System.Formats.Asn1' 5.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-447r-wph3-92pm",
+      "message": "O pacote 'System.Formats.Asn1' 5.0.0 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-447r-wph3-92pm",
       "libraryId": "System.Formats.Asn1",
       "targetGraphs": [
         "net8.0"

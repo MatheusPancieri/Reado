@@ -17,6 +17,7 @@ C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.
 C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.0\Reado.Domain.AssemblyInfoInputs.cache
 C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.0\Reado.Domain.AssemblyInfo.cs
 C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.0\Reado.Domain.csproj.CoreCompileInputs.cache
+C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.0\Reado.Domain.sourcelink.json
 C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.0\Reado.Domain.dll
 C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.0\refint\Reado.Domain.dll
 C:\Users\estagioCotin2\Documents\EstudosVS\C#\Reado\Reado.Domain\obj\Debug\net8.0\Reado.Domain.pdb
