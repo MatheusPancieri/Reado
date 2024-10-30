@@ -1,6 +1,6 @@
 # Reado
 
-Reado é um sistema de recomendação de livros e filmes que permite aos usuários descobrir e explorar novos conteúdos de forma personalizada. O aplicativo já possui uma base de dados pré-carregada com livros e filmes, facilitando a navegação e a recomendação com base nas preferências do usuário.
+**Reado** é um sistema de recomendação de livros e filmes que permite aos usuários descobrir e explorar novos conteúdos de forma personalizada. O aplicativo já possui uma base de dados pré-carregada com livros e filmes, facilitando a navegação e a recomendação com base nas preferências do usuário.
 
 ## Índice
 
@@ -14,18 +14,18 @@ Reado é um sistema de recomendação de livros e filmes que permite aos usuári
 
 ## Características
 
-- **Recomendações Personalizadas**: Receba sugestões de livros e filmes com base nas suas preferências.
-- **Sistema de Avaliação**: Avalie os livros e filmes que você leu ou assistiu.
-- **Gêneros Múltiplos**: Cada livro e filme pode pertencer a vários gêneros, proporcionando uma experiência de descoberta mais rica.
-- **Interface Intuitiva**: Navegação fácil e amigável para encontrar o que você gosta.
+- **Recomendações Personalizadas**: Receba sugestões de livros e filmes com base nas suas preferências pessoais.
+- **Sistema de Avaliação**: Avalie os livros e filmes que você leu ou assistiu, ajudando a aprimorar as recomendações.
+- **Gêneros Múltiplos**: Cada livro e filme pode pertencer a vários gêneros, proporcionando uma experiência de descoberta mais rica e diversificada.
+- **Interface Intuitiva**: Navegação fácil e amigável que torna a busca pelo que você gosta uma experiência agradável.
 
 ## Tecnologias Utilizadas
 
-- **ASP.NET Core**: Para o desenvolvimento do backend.
-- **Entity Framework**: Para gerenciamento de dados e interações com o banco de dados.
-- **AutoMapper**: Para mapeamento entre entidades e DTOs.
-- **C#**: Linguagem de programação principal.
-- **JavaScript/React**: Para o frontend (caso você decida usar React no futuro).
+- **ASP.NET Core**: Framework utilizado para o desenvolvimento do backend.
+- **Entity Framework**: Ferramenta para gerenciamento de dados e interações com o banco de dados.
+- **AutoMapper**: Biblioteca para mapeamento entre entidades e Data Transfer Objects (DTOs).
+- **C#**: Linguagem de programação principal do projeto.
+- **JavaScript/React**: Tecnologias planejadas para o frontend (caso você decida utilizar React no futuro).
 
 ## Estrutura do Projeto
 
@@ -35,32 +35,32 @@ Reado/
 ├── src/
 │   ├── Reado.Domain/                # Lógica de negócios e entidades
 │   │   ├── Entities/
-│   │   │   ├── Movie.cs
-│   │   │   ├── Book.cs
-│   │   │   └── Genre.cs
+│   │   │   ├── Movie.cs              # Classe que representa um filme
+│   │   │   ├── Book.cs               # Classe que representa um livro
+│   │   │   └── Genre.cs              # Classe que representa um gênero
 │   │   ├── Interfaces/
-│   │   │   ├── IBookHandler.cs
+│   │   │   ├── IBookHandler.cs       # Interface para manipulação de livros
 │   │   └── Enums/
-│   │       └── Genre.cs
+│   │       └── Genre.cs              # Enumeração de gêneros
 │   │
-│   ├── Reado.Application/           # Regras de negócios da aplicação
+│   ├── Reado.Application/            # Regras de negócios da aplicação
 │   │   ├── DTOs/
-│   │   │   ├── MovieDto.cs
-│   │   │   ├── BookDto.cs
+│   │   │   ├── MovieDto.cs           # Data Transfer Object para filmes
+│   │   │   ├── BookDto.cs            # Data Transfer Object para livros
 │   │   ├── Services/
-│   │   │   └── BookService.cs
+│   │   │   └── BookService.cs        # Serviço para manipulação de livros
 │   │
-│   ├── Reado.Infrastructure/        # Preocupações externas
+│   ├── Reado.Infrastructure/         # Preocupações externas
 │   │   ├── Data/
-│   │   │   ├── ApplicationDbContext.cs
-│   │   │   └── Repositories/
+│   │   │   ├── ApplicationDbContext.cs # Contexto do banco de dados
+│   │   │   └── Repositories/         # Repositórios para acesso aos dados
 │   │
-│   └── Reado.Web/                   # API Web e UI
-│       ├── Controllers/
-│       └── Program.cs
+│   └── Reado.Web/                    # API Web e UI
+│       ├── Controllers/              # Controladores para a API
+│       └── Program.cs                # Ponto de entrada da aplicação
 │
 ├── tests/
-│   ├── Reado.UnitTests/
-│   └── Reado.IntegrationTests/
+│   ├── Reado.UnitTests/              # Testes unitários
+│   └── Reado.IntegrationTests/       # Testes de integração
 │
-└── Reado.sln
+└── Reado.sln                         # Solução do Visual Studio
