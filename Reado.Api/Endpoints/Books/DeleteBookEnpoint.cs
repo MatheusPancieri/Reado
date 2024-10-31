@@ -25,7 +25,7 @@ public class DeleteBookEndpoint : IEndpoint
 
         var request = new DeleteBookRequest
         {
-            UserId = "teste@gmail.com",
+            UserId = user.Identity?.Name ?? string.Empty,
             Id = id,
         };
         var result = await handler.DeleteAsync(request);

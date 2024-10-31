@@ -1,8 +1,8 @@
 using Reado.Api.Common.Api;
 using Reado.Api.Endpoints.Books;
 using Reado.Api.Endpoints.Movies;
+using Reado.Api.Endpoints.Recommendations;
 using Reado.Api.Models;
-using Reado.Domain.Request.Movies;
 
 namespace Reado.Api.Endpoints;
 
@@ -12,14 +12,15 @@ public static class Endpoint
     {
         var endpoints = app.MapGroup("");
 
-        endpoints.MapGroup("/")
+        app.MapGroup("/health")
             .WithTags("Health Check")
-            .MapGet("/", () => new { message = "OK" });
+            .MapGet("", () => new { message = "OK" });
+
 
         // Endpoints para Books
         endpoints.MapGroup("v1/books")
             .WithTags("Books")
-            //.RequireAuthorization()
+            .RequireAuthorization()
             .MapEndpoint<CreateBookEndpoint>()
             .MapEndpoint<UpdateBookEndpoint>()
             .MapEndpoint<DeleteBookEndpoint>()
@@ -29,7 +30,7 @@ public static class Endpoint
         // Endpoints para Movies
         endpoints.MapGroup("v1/movies")
             .WithTags("Movies")
-            //.RequireAuthorization() 
+            .RequireAuthorization()
             .MapEndpoint<CreateMovieEndpoint>()
             .MapEndpoint<UpdateMovieEndpoint>()
             .MapEndpoint<DeleteMovieEndpoint>()
@@ -39,6 +40,16 @@ public static class Endpoint
         endpoints.MapGroup("v1/identity")
             .WithTags("Identity")
             .MapIdentityApi<User>();
+
+        // Endpoints para Recommendations
+        endpoints.MapGroup("v1/recommendations")
+            .WithTags("Recommentations")
+            .RequireAuthorization()
+            .MapEndpoint<CreateRecommendationEndpoint>()
+            .MapEndpoint<GetRecommendationByUserIdEndpoint>()
+            .MapEndpoint<UpdateRecommendationEndpoint>()
+            .MapEndpoint<GetRecommendationByIdEndpoint>()
+            .MapEndpoint<DeleteRecommendationEndpoint>();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app)

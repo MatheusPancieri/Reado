@@ -2,25 +2,26 @@ using System.Security.Claims;
 using Reado.Api.Common.Api;
 using Reado.Domain.Entities;
 using Reado.Domain.Handlers;
-using Reado.Domain.Request.Books;
+using Reado.Domain.Request.Recommendations;
 using Reado.Domain.Responses;
 
-namespace Reado.Api.Endpoints.Books;
+namespace Reado.Api.Endpoints.Recommendations;
 
-public class UpdateBookEndpoint : IEndpoint
+public class UpdateRecommendationEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     => app.MapPut("/{id}", HandleAsync)
-        .WithName("Book: Update")
-        .WithDescription("Update book")
-        .WithSummary("Update book")
+        .WithName("Recommendation: Update")
+        .WithDescription("Update Recommendation")
+        .WithSummary("Update Recommendation")
         .WithOrder(2)
-        .Produces<Response<Book?>>();
+        .Produces<Response<Recommendation?>>();
+
     private static async Task<IResult> HandleAsync(
-    ClaimsPrincipal user,
-    IBookHandler handler,
-    UpdateBookRequest request,
-    long id)
+        ClaimsPrincipal user,
+        IRecommendationHandler handler,
+        UpdateRecommendationRequest request,
+        long id)
     {
         request.UserId = user.Identity?.Name ?? string.Empty;
         request.Id = id;

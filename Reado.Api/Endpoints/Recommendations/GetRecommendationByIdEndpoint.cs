@@ -1,32 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Reado.Api.Common.Api;
 using Reado.Domain.Entities;
 using Reado.Domain.Handlers;
-using Reado.Domain.Request.Books;
+using Reado.Domain.Request.Recommendations;
 using Reado.Domain.Responses;
 
-namespace Reado.Api.Endpoints.Books;
+namespace Reado.Api.Endpoints.Recommendations;
 
-public class GetBookByIdEndpoint : IEndpoint
+public class GetRecommendationByIdEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     => app.MapGet("/{id}", HandleAsync)
-        .WithName("Book: Get By Id")
-        .WithDescription("Get Book By Id")
-        .WithSummary("get book by id")
+        .WithName("Recommendation: Get By Id")
+        .WithDescription("Get Recommendation By Id")
+        .WithSummary("Get recommendation by id")
         .WithOrder(4)
-        .Produces<Response<Book?>>();
+        .Produces<Response<Recommendation?>>();
+
     private static async Task<IResult> HandleAsync(
         ClaimsPrincipal user,
-        IBookHandler handler,
-        long id)
+        IRecommendationHandler handler,
+        long id) 
     {
-        var request = new GetBookByIdRequest
+        var request = new GetRecommendationByIdRequest
         {
             UserId = user.Identity?.Name ?? string.Empty,
             Id = id

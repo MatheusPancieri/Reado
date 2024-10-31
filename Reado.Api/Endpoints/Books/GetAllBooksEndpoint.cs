@@ -27,7 +27,7 @@ public class GetAllBooksEndpoint : IEndpoint
     {
         var request = new GetAllBooksRequest
         {
-            UserId = "teste@gmaiil.com",
+            UserId = user.Identity?.Name ?? string.Empty,
             PageNumber = pageNumber,
             PageSize = pageSize,
         };

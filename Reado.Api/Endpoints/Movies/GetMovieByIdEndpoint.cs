@@ -29,7 +29,7 @@ public class GetMovieByIdEndpoint : IEndpoint
     {
         var request = new GetMovieByIdRequest
         {
-            UserId = "teste@gmail.com",
+            UserId = user.Identity?.Name ?? string.Empty,
             Id = id
         };
 

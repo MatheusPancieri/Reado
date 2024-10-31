@@ -21,7 +21,7 @@ public class CreateMovieEndpoint : IEndpoint
         IMovieHandler handler,
         CreateMovieRequest request)
     {
-        request.UserId = "teste@gmail.com";
+        request.UserId = user.Identity?.Name ?? string.Empty;
         var result = await handler.CreateAsync(request);
         return result.IsSuccess
             ? TypedResults.Ok(result)

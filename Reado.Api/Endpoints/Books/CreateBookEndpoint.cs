@@ -22,7 +22,7 @@ public class CreateBookEndpoint : IEndpoint
         CreateBookRequest request
     )
     {
-        request.UserId = "teste@gmail.com";
+        request.UserId = user.Identity?.Name ?? string.Empty;
         var result = await handler.CreateAsync(request);
         return result.IsSuccess
             ? TypedResults.Created($"/{result.Data?.Id}", result)

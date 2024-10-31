@@ -19,6 +19,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
 
     public DbSet<Movie> Movies { get; set; }
     public DbSet<Book> Books { get; set; }
+    public DbSet<Recommendation> Recommendations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

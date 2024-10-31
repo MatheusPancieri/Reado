@@ -75,6 +75,9 @@ public static class BuilderExtension
         builder
             .Services
             .AddTransient<IBookHandler, BookHandler>();
+        builder
+            .Services
+            .AddTransient<IRecommendationHandler, RecommendationHandler>();
 
     }
 }

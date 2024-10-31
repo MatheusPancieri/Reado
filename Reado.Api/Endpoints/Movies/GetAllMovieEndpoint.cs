@@ -30,7 +30,7 @@ public class GetAllMoviesEndpoint : IEndpoint
     {
         var request = new GetAllMoviesRequest
         {
-            UserId = "teste@gmail.com",
+            UserId = user.Identity?.Name ?? string.Empty,
             PageNumber = pageNumber,
             PageSize = pageSize,
         };
