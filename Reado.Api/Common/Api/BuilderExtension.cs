@@ -4,6 +4,7 @@ using Reado.Api.Data;
 using Reado.Api.Handlers;
 using Reado.Api.Models;
 using Reado.Domain;
+using Reado.Domain.Entities;
 using Reado.Domain.Handlers;
 
 namespace Reado.Api.Common.Api;
@@ -78,6 +79,9 @@ public static class BuilderExtension
         builder
             .Services
             .AddTransient<IRecommendationHandler, RecommendationHandler>();
+        builder
+            .Services
+            .AddTransient<IUserPreferenceHandler, UserPreferenceHandler>();
 
     }
 }

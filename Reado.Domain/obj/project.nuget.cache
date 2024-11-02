@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XX+xXzQuN7A=",
+  "dgSpecHash": "Xl/Ulwdp9io=",
   "success": true,
-  "projectFilePath": "C:\\Users\\estagioCotin2\\Documents\\EstudosVS\\C#\\Reado\\Reado.Domain\\Reado.Domain.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.7\\microsoft.netcore.app.ref.8.0.7.nupkg.sha512",
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.7\\microsoft.windowsdesktop.app.ref.8.0.7.nupkg.sha512",
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.7\\microsoft.aspnetcore.app.ref.8.0.7.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\dev\\Reado\\Reado.Domain\\Reado.Domain.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

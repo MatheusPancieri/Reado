@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Reado.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15d600d66bc68076c43b11e8f20c6b82666926db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0979045119a4c03647cc7fb96cd35c0fca211c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Reado.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Reado.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

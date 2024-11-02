@@ -1,12 +1,11 @@
 {
   "Version": 1,
-  "Hash": "KEYcQzWwrv2LW1JQSBKb4yp+4rmyHX+eoSBOQL+9xbU=",
+  "Hash": "9R7Vq10ZxkSZniMzuBT4bLiXJku+Hxz3cqIenokVEo8=",
   "Source": "Reado.Api",
   "BasePath": "_content/Reado.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "Assets": []
 }

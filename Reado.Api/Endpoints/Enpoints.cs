@@ -2,7 +2,9 @@ using Reado.Api.Common.Api;
 using Reado.Api.Endpoints.Books;
 using Reado.Api.Endpoints.Movies;
 using Reado.Api.Endpoints.Recommendations;
+using Reado.Api.Endpoints.UserPreferences;
 using Reado.Api.Models;
+using Reado.Domain.Request.UserPreferences;
 
 namespace Reado.Api.Endpoints;
 
@@ -50,6 +52,13 @@ public static class Endpoint
             .MapEndpoint<UpdateRecommendationEndpoint>()
             .MapEndpoint<GetRecommendationByIdEndpoint>()
             .MapEndpoint<DeleteRecommendationEndpoint>();
+
+        // Endpoints para UserPreferences
+        endpoints.MapGroup("v1/userpreferences")
+            .WithTags("UserPreferences")
+            .RequireAuthorization()
+            .MapEndpoint<GetUserPreferenceEndpoint>()
+            .MapEndpoint<CreateUserPreferenceEndpoint>();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app)

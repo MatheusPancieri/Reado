@@ -1,14 +1,12 @@
 using Reado.Domain.Enums;
 
-namespace Reado.Domain.Entities
+namespace Reado.Domain.Request.UserPreferences
 {
-    public class UserPreference
+    public class CreateUserPreferenceRequest : Request
     {
-        public int Id { get; set; } 
-        public string UserId { get; set; } = string.Empty;
         public List<string> PreferredGenres { get; set; } = []; 
         public List<string> PreferredAuthors { get; set; } = []; 
         public List<string> PreferredDirectors { get; set; } = []; 
-        public ContentTypes ContentType { get; set; } = ContentTypes.Movies;
+        public ContentTypes ContentType { get; set; } = ContentTypes.Movies; 
     }
 }
