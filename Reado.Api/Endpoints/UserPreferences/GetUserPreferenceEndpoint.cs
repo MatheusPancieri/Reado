@@ -14,7 +14,7 @@ public class GetUserPreferenceEndpoint : IEndpoint
         .WithName("UserPreference: Get By Id")
         .WithDescription("Get UserPreference By Id")
         .WithSummary("Get UserPreference by id")
-        .WithOrder(4)
+        .WithOrder(1)
         .Produces<Response<UserPreference?>>();
 
     private static async Task<IResult> HandleAsync(

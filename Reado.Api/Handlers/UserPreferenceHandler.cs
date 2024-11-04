@@ -25,7 +25,6 @@ namespace Reado.Api.Handlers
                     return new Response<UserPreference?>(null, 400, "User preference already exists.");
                 }
 
-                // Cria uma nova preferência
                 var userPreference = new UserPreference
                 {
                     UserId = request.UserId,
@@ -45,8 +44,6 @@ namespace Reado.Api.Handlers
                 return new Response<UserPreference?>(null, 500, $"Unable to create user preference: {ex.Message}");
             }
         }
-
-        // Método para obter uma preferência de usuário pelo ID
         public async Task<PageResponse<List<UserPreference>>> GetAsync(GetUserPreferenceRequest request)
         {
             try

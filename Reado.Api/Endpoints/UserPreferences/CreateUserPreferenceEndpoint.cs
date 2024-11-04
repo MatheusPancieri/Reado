@@ -14,6 +14,7 @@ public class CreateUserPreferenceEndpoint : IEndpoint
         .WithName("UserPreference: Create")
         .WithSummary("Creates a new user preference")
         .WithDescription("Creates a new user preference for the user")
+        .WithOrder(1)
         .Produces<Response<UserPreference?>>();
 
     private static async Task<IResult> HandleAsync(
