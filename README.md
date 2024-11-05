@@ -32,35 +32,78 @@
 ```plaintext
 Reado/
 │
-├── src/
-│   ├── Reado.Domain/                # Lógica de negócios e entidades
-│   │   ├── Entities/
-│   │   │   ├── Movie.cs              # Classe que representa um filme
-│   │   │   ├── Book.cs               # Classe que representa um livro
-│   │   │   └── Genre.cs              # Classe que representa um gênero
-│   │   ├── Interfaces/
-│   │   │   ├── IBookHandler.cs       # Interface para manipulação de livros
-│   │   └── Enums/
-│   │       └── Genre.cs              # Enumeração de gêneros
+├── Reado.Api/                            # API principal com extensões, mapeamentos, endpoints e handlers
+│   ├── Common/
+│   │   ├── Api/
+│   │   │   ├── AppExtension.cs
+│   │   │   ├── BuilderExtension.cs
+│   │   │   └── IEndpoint.cs
 │   │
-│   ├── Reado.Application/            # Regras de negócios da aplicação
-│   │   ├── DTOs/
-│   │   │   ├── MovieDto.cs           # Data Transfer Object para filmes
-│   │   │   ├── BookDto.cs            # Data Transfer Object para livros
-│   │   ├── Services/
-│   │   │   └── BookService.cs        # Serviço para manipulação de livros
+│   ├── Data/
+│   │   ├── Mappings/
+│   │   │   ├── Identity/
+│   │   │   │   └── (Todos os arquivos de mapeamento do Identity)
+│   │   │   ├── BookMapping.cs
+│   │   │   ├── RecommendationMapping.cs
+│   │   │   └── UserPreferences.cs
+│   │   └── AppDbContext.cs
 │   │
-│   ├── Reado.Infrastructure/         # Preocupações externas
-│   │   ├── Data/
-│   │   │   ├── ApplicationDbContext.cs # Contexto do banco de dados
-│   │   │   └── Repositories/         # Repositórios para acesso aos dados
+│   ├── Endpoints/
+│   │   ├── Books/
+│   │   ├── Identity/
+│   │   ├── Movies/
+│   │   ├── Recommendation/
+│   │   ├── UserPreference/
+│   │   └── Endpoints.cs
 │   │
-│   └── Reado.Web/                    # API Web e UI
-│       ├── Controllers/              # Controladores para a API
-│       └── Program.cs                # Ponto de entrada da aplicação
+│   ├── Handlers/
+│   │   ├── BookHandler.cs
+│   │   ├── MovieHandler.cs
+│   │   ├── RecommendationHandler.cs
+│   │   └── UserPreferenceHandler.cs
+│   │
+│   ├── Migrations/
+│   │   └── (Arquivos de migração)
+│   │
+│   ├── Models/
+│   │   └── User.cs
+│   │
+│   ├── ApiConfiguration.cs
+│   └── Program.cs
 │
-├── tests/
-│   ├── Reado.UnitTests/              # Testes unitários
-│   └── Reado.IntegrationTests/       # Testes de integração
+├── Reado.Domain/                         # Lógica de domínio, entidades, enumeradores e handlers
+│   ├── Entities/
+│   │   ├── Account/
+│   │   │   ├── RoleClaim.cs
+│   │   │   └── User.cs
+│   │   ├── Books.cs
+│   │   ├── Movie.cs
+│   │   ├── Recommendation.cs
+│   │   └── UserPreference.cs
+│   │
+│   ├── Enums/
+│   │   ├── ContentTypes.cs
+│   │   └── Genre.cs
+│   │
+│   ├── Handlers/
+│   │   ├── IAccountHandler.cs
+│   │   ├── IBookHandler.cs
+│   │   ├── IMovieHandler.cs
+│   │   ├── IRecommendationHandler.cs
+│   │   └── IUserPreferenceHandler.cs
+│   │
+│   ├── Response/
+│   │   ├── PageResponse.cs
+│   │   └── Response.cs
+│   │
+│   └── Request/
+│       └── (Padronização do Request)
 │
-└── Reado.sln                         # Solução do Visual Studio
+├── Reado.Web/ *Ainda Em Produção*          # Aplicação Web, controladores e configuração da interface
+│   ├── Controllers/
+│   │   └── (Controladores da interface)
+│   │
+│   └── (Demais arquivos específicos da interface web)
+│
+└── Reado.sln                              # Arquivo de solução do projeto
+
