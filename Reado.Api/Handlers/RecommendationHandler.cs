@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Reado.Api.Data;
-using Reado.Domain.Algorithms;
 using Reado.Domain.Entities;
 using Reado.Domain.Handlers;
 using Reado.Domain.Request.Recommendations;
@@ -12,10 +11,9 @@ using Reado.Domain.Responses;
 
 namespace Reado.Api.Handlers
 {
-    public class RecommendationHandler(AppDbContext context, RecommendationAlgorithm algorithm) : IRecommendationHandler
+    public class RecommendationHandler(AppDbContext context) : IRecommendationHandler
     {
         private readonly AppDbContext _context = context;
-        private readonly RecommendationAlgorithm _algorithm = algorithm;
 
         public async Task<Response<Recommendation?>> CreateAsync(CreateRecommendationRequest request)
         {
@@ -103,43 +101,5 @@ namespace Reado.Api.Handlers
             return new Response<Recommendation?>(recommendation, 200, message: "Recommendation updated successfully.");
         }
 
-        public async Task<PageResponse<List<Recommendation>>> GetForUserAsync(GetRecommendationForUser request)
-        {
-            // 1. Carrega as preferências do usuário
-            var userPreferences = await _context.Recommendations
-                .FirstOrDefaultAsync(r => r.UserId == request.UserId);
-
-            if (userPreferences == null)
-            {
-                return new PageResponse<List<Recommendation>>(null, 0, request.PageNumber, request.PageSize);
-            }
-
-            // 2. Carrega todas as recomendações disponíveis
-            var allRecommendations = await _context.Recommendations.ToListAsync();
-
-            // 3. Carrega o histórico de interações de outros usuários
-            var userHistory = await LoadUserHistoryAsync();
-
-            // 4. Gera as recomendações usando o modelo híbrido
-            var personalizedRecommendations = _algorithm.GenerateRecommendations(userPreferences, allRecommendations, userHistory);
-
-            // 5. Pagina os resultados
-            var totalItems = personalizedRecommendations.Count;
-            var paginatedRecommendations = personalizedRecommendations
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .ToList();
-
-            return new PageResponse<List<Recommendation>>(paginatedRecommendations, totalItems, request.PageNumber, request.PageSize);
-        }
-
-        private async Task<Dictionary<string, List<Recommendation>>> LoadUserHistoryAsync()
-        {
-            var history = await _context.Recommendations
-                .GroupBy(r => r.UserId)
-                .ToDictionaryAsync(g => g.Key, g => g.ToList());
-
-            return history;
-        }
     }
 }

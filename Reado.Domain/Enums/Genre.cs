@@ -23,5 +23,6 @@ public enum Genre
     Musical = 1 << 16,      // 65536 
     Sport = 1 << 17,        // 131072 
     Crime = 1 << 18,        // 262144 
-    Superhero = 1 << 19     // 524288 
+    Superhero = 1 << 19,     // 524288 
+    Genre = 1 << 20
 }
