@@ -14,7 +14,7 @@ public static class Endpoint
     {
         var endpoints = app.MapGroup("");
 
-        app.MapGroup("/health")
+        app.MapGroup("/")
             .WithTags("Health Check")
             .MapGet("", () => new { message = "OK" });
 

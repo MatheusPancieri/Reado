@@ -11,4 +11,5 @@ public interface IRecommendationHandler
     Task<PageResponse<List<Recommendation>>> GetByUserIdAsync(GetRecommendationByUserIdRequest request);
     Task<Response<Recommendation?>> GetByIdAsync(GetRecommendationByIdRequest request);
     Task<Response<Recommendation?>> UpdateAsync(UpdateRecommendationRequest request);
+    Task<PageResponse<List<Recommendation>>> GetForUserAsync(GetRecommendationForUser request);
 }
