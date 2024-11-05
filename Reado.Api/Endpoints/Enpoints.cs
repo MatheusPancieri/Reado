@@ -51,7 +51,8 @@ public static class Endpoint
             .MapEndpoint<GetRecommendationByUserIdEndpoint>()
             .MapEndpoint<UpdateRecommendationEndpoint>()
             .MapEndpoint<GetRecommendationByIdEndpoint>()
-            .MapEndpoint<DeleteRecommendationEndpoint>();
+            .MapEndpoint<DeleteRecommendationEndpoint>()
+            .MapEndpoint<GetRecommendationForUserEndpoint>();
 
         // Endpoints para UserPreferences
         endpoints.MapGroup("v1/userpreferences")
