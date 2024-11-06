@@ -76,6 +76,8 @@ public static class BuilderExtension
         builder
             .Services
             .AddTransient<IBookHandler, BookHandler>();
+        builder.Services.AddHttpClient();
+        builder.Services.Configure<OpenAIOptions>(builder.Configuration.GetSection("OpenAI"));
         builder
             .Services
             .AddTransient<IRecommendationHandler, RecommendationHandler>();

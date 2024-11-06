@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "XX+xXzQuN7A=",
+  "dgSpecHash": "a7Zq57wwJQQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\estagioCotin2\\Documents\\EstudosVS\\C#\\Reado\\Reado.Domain\\Reado.Domain.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.7\\microsoft.aspnetcore.app.ref.8.0.7.nupkg.sha512",
     "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.7\\microsoft.netcore.app.ref.8.0.7.nupkg.sha512",
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.7\\microsoft.windowsdesktop.app.ref.8.0.7.nupkg.sha512",
-    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.7\\microsoft.aspnetcore.app.ref.8.0.7.nupkg.sha512"
+    "C:\\Users\\estagioCotin2\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.7\\microsoft.windowsdesktop.app.ref.8.0.7.nupkg.sha512"
   ],
   "logs": []
 }

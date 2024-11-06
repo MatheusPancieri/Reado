@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reado.Api.Data;
 
@@ -11,9 +12,11 @@ using Reado.Api.Data;
 namespace Reado.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241106142727_AddPreferredTitlesToRecommendations")]
+    partial class AddPreferredTitlesToRecommendations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -351,10 +354,6 @@ namespace Reado.Api.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("MovieList")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NotificationFrequency")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -379,17 +378,9 @@ namespace Reado.Api.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<long>("UserPreferenceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int?>("UserPreferenceId1")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserPreferenceId1");
 
                     b.ToTable("Recommendations", (string)null);
                 });
@@ -485,15 +476,6 @@ namespace Reado.Api.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Reado.Domain.Entities.Recommendation", b =>
-                {
-                    b.HasOne("Reado.Domain.Entities.UserPreference", "UserPreference")
-                        .WithMany()
-                        .HasForeignKey("UserPreferenceId1");
-
-                    b.Navigation("UserPreference");
                 });
 
             modelBuilder.Entity("Reado.Api.Models.User", b =>

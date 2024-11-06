@@ -8,5 +8,7 @@ namespace Reado.Domain.Request.Recommendations;
 
 public class GetRecommendationByUserIdRequest : PageRequest
 {
+    public List<string>? MovieList { get; set; }
 
+    public string UserPreference { get; set; } = string.Empty;
 }

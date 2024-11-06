@@ -10,7 +10,7 @@ namespace Reado.Api.Endpoints.UserPreferences;
 public class GetUserPreferenceEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-    => app.MapGet("/{id}", HandleAsync)
+    => app.MapGet("/", HandleAsync)
         .WithName("UserPreference: Get By Id")
         .WithDescription("Get UserPreference By Id")
         .WithSummary("Get UserPreference by id")
@@ -19,13 +19,11 @@ public class GetUserPreferenceEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(
         ClaimsPrincipal user,
-        IUserPreferenceHandler handler,
-        long id)
+        IUserPreferenceHandler handler)
     {
         var request = new GetUserPreferenceRequest
         {
-            UserId = user.Identity?.Name ?? string.Empty,
-            Id = id
+            UserId = user.Identity?.Name ?? string.Empty
         };
 
         var result = await handler.GetAsync(request);
