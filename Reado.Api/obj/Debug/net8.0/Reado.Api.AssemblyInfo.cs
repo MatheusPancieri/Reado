@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Reado.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30894dbc87e692b19f4cd8bf3d6a9e5be1f71f56")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0df27271f7a4b87142d454752fb2a4308bce0857")]
 [assembly: System.Reflection.AssemblyProductAttribute("Reado.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Reado.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -12,4 +12,5 @@ public interface IUserPreferenceHandler
 {
     Task<Response<UserPreference?>> CreateAsync(CreateUserPreferenceRequest request);
     Task<PageResponse<List<UserPreference?>>> GetAsync(GetUserPreferenceRequest request);
+    Task<Response<UserPreference>> GetProfileNameAsync(GetUserPreferenceByProfileName request);
 }

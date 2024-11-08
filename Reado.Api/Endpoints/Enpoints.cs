@@ -1,5 +1,7 @@
 using Reado.Api.Common.Api;
 using Reado.Api.Endpoints.Books;
+using Reado.Api.Endpoints.Identity;
+using Reado.Api.Endpoints.Identity;
 using Reado.Api.Endpoints.Movies;
 using Reado.Api.Endpoints.Recommendations;
 using Reado.Api.Endpoints.UserPreferences;
@@ -42,6 +44,10 @@ public static class Endpoint
         endpoints.MapGroup("v1/identity")
             .WithTags("Identity")
             .MapIdentityApi<User>();
+        endpoints.MapGroup("v1/identity")
+            .WithTags("Identity")
+            .MapEndpoint<LogoutEndpoint>()
+            .MapEndpoint<GetRolesEndpoint>();
 
         // Endpoints para Recommendations
         endpoints.MapGroup("v1/recommendations")
@@ -58,7 +64,8 @@ public static class Endpoint
             .WithTags("UserPreferences")
             .RequireAuthorization()
             .MapEndpoint<GetUserPreferenceEndpoint>()
-            .MapEndpoint<CreateUserPreferenceEndpoint>();
+            .MapEndpoint<CreateUserPreferenceEndpoint>()
+            .MapEndpoint<GetUserPreferenceByProfileNameEndpoint>();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app)

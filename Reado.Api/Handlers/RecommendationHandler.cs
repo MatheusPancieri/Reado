@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -79,11 +80,7 @@ namespace Reado.Api.Handlers
         {
             // Buscar as preferências do usuário no banco de dados
             var userPreference = await _context.UserPreferences
-                .FirstOrDefaultAsync(up => up.UserId == request.UserId);
-
-            if (userPreference == null)
-                throw new Exception("As preferências do usuário não foram encontradas.");
-
+                .FirstOrDefaultAsync(up => up.UserId == request.UserId && up.ProfileName == request.ProfileName) ?? throw new Exception("As preferências do usuário não foram encontradas.");
             // Obter a lista de filmes disponíveis
             var movieList = await _context.Movies.Select(m => m.Title).ToListAsync();
 
@@ -91,42 +88,31 @@ namespace Reado.Api.Handlers
                 throw new Exception("A lista de filmes disponíveis não pode ser vazia.");
 
             // Construir o texto das preferências do usuário para enviar ao OpenAI
-            var userPreferenceText = BuildUserPreferenceText(userPreference);
+            
 
             // Chamar o OpenAI para gerar as recomendações
-            var openAiRecommendations = await GetRecommendationsFromOpenAiAsync(userPreferenceText, movieList, request.UserId, userPreference.Id);
+            var openAiRecommendations = await GetRecommendationsFromOpenAiAsync(userPreference, movieList, request.UserId, userPreference.Id);
 
-            return new PageResponse<List<Recommendation>>(openAiRecommendations, openAiRecommendations.Count, request.PageNumber, request.PageSize);
-        }
-
-        private static string BuildUserPreferenceText(UserPreference userPreference)
-        {
-            var sb = new StringBuilder();
-
-            if (userPreference.PreferredGenres != null && userPreference.PreferredGenres.Any())
-                sb.AppendLine($"Gêneros preferidos: {string.Join(", ", userPreference.PreferredGenres)}.");
-
-            if (userPreference.PreferredAuthors != null && userPreference.PreferredAuthors.Any())
-                sb.AppendLine($"Autores preferidos: {string.Join(", ", userPreference.PreferredAuthors)}.");
-
-            if (userPreference.PreferredDirectors != null && userPreference.PreferredDirectors.Any())
-                sb.AppendLine($"Diretores preferidos: {string.Join(", ", userPreference.PreferredDirectors)}.");
-
-            // Remover possíveis caracteres indesejados e espaços extras
-            var preferencesText = sb.ToString().Trim();
-            preferencesText = Regex.Replace(preferencesText, @"\s+", " ");
-
-            return preferencesText;
+            return new PageResponse<List<Recommendation>>(
+                data: openAiRecommendations,
+                code: 200,
+                message: "Recommendations retrieved successfully."
+            );
         }
 
         // Método para chamar o OpenAI e retornar uma lista de recomendações
-        public async Task<List<Recommendation>> GetRecommendationsFromOpenAiAsync(string userPreferences, List<string> movieList, string userId, int userPreferenceId)
+        public async Task<List<Recommendation>> GetRecommendationsFromOpenAiAsync(UserPreference userPreferences, List<string> movieList, string userId, int userPreferenceId)
         {
             var endpoint = "https://api.openai.com/v1/chat/completions";
             var limitedMovieList = movieList.Take(100).ToList(); // Aumentado para 100 filmes
 
-            var systemMessage = $"Você é um assistente de recomendação de filmes. Com base nas preferências do usuário, recomende 5 filmes da lista fornecida. Certifique-se de que os filmes recomendados correspondam aos gêneros e diretores preferidos do usuário. Responda com uma lista de títulos, um por linha, sem números ou símbolos: {string.Join(", ", limitedMovieList)}.";
-
+            var systemMessage = $@"
+                Você é um assistente especializado em recomendar filmes personalizados. Para priorizar as recomendações, siga estas regras:
+                - Gêneros têm prioridade máxima ({string.Join(", ", userPreferences.PreferredGenres)}).
+                - Diretores e atores preferidos têm prioridade secundária ({string.Join(", ", userPreferences.PreferredDirectors)}, {string.Join(", ", userPreferences.PreferredActors)}).
+                - Temas e filmes favoritos servem como referência ({string.Join(", ", userPreferences.PreferredThemes)}, {string.Join(", ", userPreferences.PreferredMovies)}).
+                Selecione **5 filmes** da lista fornecida e explique sua escolha.
+                ";
             var userMessage = $"{userPreferences} Quais filmes você recomenda? Por favor, forneça uma lista de 5 filmes recomendados, apenas títulos, um por linha.";
 
             var requestBody = new
@@ -144,7 +130,7 @@ namespace Reado.Api.Handlers
             var jsonRequestBody = JsonConvert.SerializeObject(requestBody);
             var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _openAiApiKey);
-            request.Headers.UserAgent.ParseAdd("SeuAppNome/1.0"); // Adicione o nome do seu aplicativo
+            request.Headers.UserAgent.ParseAdd("SeuAppNome/1.0");
             request.Content = new StringContent(jsonRequestBody, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.SendAsync(request);

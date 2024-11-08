@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Reado.Api.Common.Api;
 using Reado.Domain.Entities;
 using Reado.Domain.Handlers;
@@ -11,38 +12,41 @@ public class GetRecommendationByUserIdEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
     => app.MapGet("/user", HandleAsync)
-        .WithName("Recommendation: Get By User ID")
-        .WithDescription("Get Recommendations By User ID")
-        .WithSummary("Retrieve all recommendations for the authenticated user")
+        .WithName("Recommendation: Get By User ID and Profile Name")
+        .WithDescription("Get Recommendations By User ID and Profile Name")
+        .WithSummary("Retrieve recommendations for the authenticated user based on a specific profile")
         .WithOrder(3)
-        .Produces<PageResponse<IEnumerable<Recommendation>>>(); 
+        .Produces<PageResponse<IEnumerable<Recommendation>>>();
 
     private static async Task<IResult> HandleAsync(
         ClaimsPrincipal user,
+        [FromQuery] string profileName, // Permitir que o usuário forneça o ProfileName via query string
         IRecommendationHandler handler)
     {
         var userId = user.Identity?.Name ?? string.Empty;
+
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(profileName))
+        {
+            return TypedResults.BadRequest(new Response<object>(null, 400, "User ID or Profile Name is missing."));
+        }
+
         var request = new GetRecommendationByUserIdRequest
         {
-            UserId = userId
+            UserId = userId,
+            ProfileName = profileName // Adiciona o ProfileName ao request
         };
 
         // Chama o método GetByUserIdAsync do handler para buscar recomendações do banco ou OpenAI
         var result = await handler.GetByUserIdAsync(request);
 
-        // Verifica se a resposta contém recomendações, caso contrário, retorne as do OpenAI
         if (result.IsSuccess && result.Data.Any())
         {
-            // Se houver recomendações no banco, retorna as mesmas
             return TypedResults.Ok(result);
         }
         else
         {
-            // Se não houver recomendações no banco, já foi chamado o OpenAI dentro do método handler
-            var openAiRecommendations = result.Data;
-            
-            // Retorna as recomendações do OpenAI ou do banco
-            return TypedResults.Ok(new PageResponse<List<Recommendation>>(openAiRecommendations, openAiRecommendations.Count, request.PageNumber, request.PageSize));
+            // Se não houver recomendações no banco, já foi chamado o OpenAI dentro do handler
+            return TypedResults.Ok(new PageResponse<List<Recommendation>>(result.Data, result.Data.Count, request.PageNumber, request.PageSize));
         }
     }
 }

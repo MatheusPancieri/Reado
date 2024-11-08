@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reado.Api.Data;
 
@@ -11,9 +12,11 @@ using Reado.Api.Data;
 namespace Reado.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241108175355_AddUserPreferenceMovieandThemeandActors")]
+    partial class AddUserPreferenceMovieandThemeandActors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -426,10 +429,6 @@ namespace Reado.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PreferredThemes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -17,21 +17,27 @@ namespace Reado.Api.Handlers
         {
             try
             {
+                // Verifica se já existe uma preferência com o mesmo ProfileName para o mesmo UserId
                 var existingPreference = await _context.UserPreferences
-                    .FirstOrDefaultAsync(up => up.UserId == request.UserId);
+                    .FirstOrDefaultAsync(up => up.UserId == request.UserId && up.ProfileName == request.ProfileName);
 
                 if (existingPreference != null)
                 {
-                    return new Response<UserPreference?>(null, 400, "User preference already exists.");
+                    return new Response<UserPreference?>(null, 400, "A user preference with this profile name already exists.");
                 }
 
+                // Cria a nova preferência
                 var userPreference = new UserPreference
                 {
                     UserId = request.UserId,
-                    PreferredGenres = request.PreferredGenres ?? [],
-                    PreferredAuthors = request.PreferredAuthors ?? [],
-                    PreferredDirectors = request.PreferredDirectors ?? [],
-                    ContentType = request.ContentType
+                    ProfileName = request.ProfileName,
+                    PreferredGenres = request.PreferredGenres ?? new List<string>(),
+                    PreferredAuthors = request.PreferredAuthors ?? new List<string>(),
+                    PreferredDirectors = request.PreferredDirectors ?? new List<string>(),
+                    ContentType = request.ContentType,
+                    PreferredActors = request.PreferredActors ?? new List<string>(),
+                    PreferredMovies = request.PreferredMovies ?? new List<string>(),
+                    PreferredThemes = request.PreferredThemes ?? new List<string>(),
                 };
 
                 await _context.UserPreferences.AddAsync(userPreference);
@@ -44,6 +50,7 @@ namespace Reado.Api.Handlers
                 return new Response<UserPreference?>(null, 500, $"Unable to create user preference: {ex.Message}");
             }
         }
+
         public async Task<PageResponse<List<UserPreference>>> GetAsync(GetUserPreferenceRequest request)
         {
             try
@@ -66,6 +73,24 @@ namespace Reado.Api.Handlers
             }
         }
 
+        public async Task<Response<UserPreference?>> GetProfileNameAsync(GetUserPreferenceByProfileName request)
+        {
+            try
+            {
+                var userPreference = await _context.UserPreferences
+                    .FirstOrDefaultAsync(up => up.ProfileName == request.ProfileName && up.UserId == request.UserId);
 
+                if (userPreference == null)
+                {
+                    return new Response<UserPreference?>(null, 404, "User preference with the specified profile name not found.");
+                }
+
+                return new Response<UserPreference?>(userPreference, 200, "User preference retrieved successfully.");
+            }
+            catch (Exception ex)
+            {
+                return new Response<UserPreference?>(null, 500, $"Unable to retrieve user preference: {ex.Message}");
+            }
+        }
     }
 }

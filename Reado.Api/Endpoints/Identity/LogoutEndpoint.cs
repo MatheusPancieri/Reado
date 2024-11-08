@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Reado.Api.Common.Api;
 using Reado.Api.Models;
 
-namespace Reado.Api.Endpoints.Idendity;
+namespace Reado.Api.Endpoints.Identity;
 
 public class LogoutEndpoint : IEndpoint
 {
