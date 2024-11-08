@@ -22,11 +22,12 @@ namespace Reado.Api.Handlers
 
         public async Task<Response<Recommendation?>> CreateAsync(CreateRecommendationRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.PreferredGenres) ||
-                string.IsNullOrWhiteSpace(request.PreferredAuthors) ||
-                string.IsNullOrWhiteSpace(request.PreferredTitles))
+            // Validação dos campos obrigatórios
+            if (request.Genres == null || !request.Genres.Any() ||
+                request.Authors == null || !request.Authors.Any() ||
+                string.IsNullOrWhiteSpace(request.Title))
             {
-                return new Response<Recommendation?>(null, 400, "As preferências do usuário não podem ser vazias.");
+                return new Response<Recommendation?>(null, 400, "Os campos obrigatórios não podem estar vazios.");
             }
 
             if (request.MovieList == null || !request.MovieList.Any())
@@ -34,6 +35,7 @@ namespace Reado.Api.Handlers
                 return new Response<Recommendation?>(null, 400, "A lista de filmes não pode ser vazia.");
             }
 
+            // Buscar as preferências do usuário
             var existingUserPreference = await _context.UserPreferences
                 .FirstOrDefaultAsync(up => up.UserId == request.UserId);
 
@@ -42,18 +44,20 @@ namespace Reado.Api.Handlers
                 return new Response<Recommendation?>(null, 400, "Preferências do usuário não encontradas.");
             }
 
-            // Cria a recomendação, associando o UserPreference existente
+            // Criar a recomendação, associando o UserPreference existente
             var recommendation = new Recommendation
             {
                 UserId = request.UserId,
                 UserPreferenceId = existingUserPreference.Id,
                 MovieList = request.MovieList,
-                PreferredAuthors = request.PreferredAuthors,
-                PreferredGenres = request.PreferredGenres,
-                PreferredTitles = request.PreferredTitles,
-                ContentTypes = request.ContentTypes
+                Title = request.Title, // Novo campo
+                Genres = request.Genres, // Novo campo
+                Authors = request.Authors, // Novo campo
+                ContentTypes = request.ContentTypes, // Tipo de conteúdo
+                Explanation = request.Explanation // Justificativa
             };
 
+            // Adicionar a recomendação ao banco de dados
             _context.Recommendations.Add(recommendation);
             await _context.SaveChangesAsync();
 
@@ -78,43 +82,55 @@ namespace Reado.Api.Handlers
 
         public async Task<PageResponse<List<Recommendation>>> GetByUserIdAsync(GetRecommendationByUserIdRequest request)
         {
-            // Buscar as preferências do usuário no banco de dados
             var userPreference = await _context.UserPreferences
-                .FirstOrDefaultAsync(up => up.UserId == request.UserId && up.ProfileName == request.ProfileName) ?? throw new Exception("As preferências do usuário não foram encontradas.");
-            // Obter a lista de filmes disponíveis
-            var movieList = await _context.Movies.Select(m => m.Title).ToListAsync();
+                .FirstOrDefaultAsync(up => up.UserId == request.UserId && up.ProfileName == request.ProfileName)
+                ?? throw new Exception("As preferências do usuário não foram encontradas.");
 
-            if (movieList == null || movieList.Count == 0)
+            var movieList = await _context.Movies.Select(m => m.Title).ToListAsync();
+            if (movieList == null || !movieList.Any())
                 throw new Exception("A lista de filmes disponíveis não pode ser vazia.");
 
-            // Construir o texto das preferências do usuário para enviar ao OpenAI
-            
+            // Obter as recomendações diretamente do método
+            var recommendations = await GetRecommendationsFromOpenAiAsync(userPreference, movieList, request.UserId, userPreference.Id);
 
-            // Chamar o OpenAI para gerar as recomendações
-            var openAiRecommendations = await GetRecommendationsFromOpenAiAsync(userPreference, movieList, request.UserId, userPreference.Id);
+            // Salvar as recomendações no banco de dados
+            foreach (var recommendation in recommendations)
+            {
+                _context.Recommendations.Add(recommendation);
+            }
+
+            await _context.SaveChangesAsync();
 
             return new PageResponse<List<Recommendation>>(
-                data: openAiRecommendations,
+                data: recommendations,
                 code: 200,
-                message: "Recommendations retrieved successfully."
+                message: recommendations.Any() ? "Recommendations retrieved successfully." : "No recommendations found."
             );
         }
-
         // Método para chamar o OpenAI e retornar uma lista de recomendações
-        public async Task<List<Recommendation>> GetRecommendationsFromOpenAiAsync(UserPreference userPreferences, List<string> movieList, string userId, int userPreferenceId)
+        public async Task<List<Recommendation>> GetRecommendationsFromOpenAiAsync(
+            UserPreference userPreferences,
+            List<string> movieList,
+            string userId,
+            int userPreferenceId)
         {
             var endpoint = "https://api.openai.com/v1/chat/completions";
-            var limitedMovieList = movieList.Take(100).ToList(); // Aumentado para 100 filmes
+            var limitedMovieList = movieList.Take(100).ToList(); // Limitar a lista a 100 filmes
 
+            // Construir a mensagem do sistema
             var systemMessage = $@"
                 Você é um assistente especializado em recomendar filmes personalizados. Para priorizar as recomendações, siga estas regras:
                 - Gêneros têm prioridade máxima ({string.Join(", ", userPreferences.PreferredGenres)}).
                 - Diretores e atores preferidos têm prioridade secundária ({string.Join(", ", userPreferences.PreferredDirectors)}, {string.Join(", ", userPreferences.PreferredActors)}).
                 - Temas e filmes favoritos servem como referência ({string.Join(", ", userPreferences.PreferredThemes)}, {string.Join(", ", userPreferences.PreferredMovies)}).
-                Selecione **5 filmes** da lista fornecida e explique sua escolha.
-                ";
-            var userMessage = $"{userPreferences} Quais filmes você recomenda? Por favor, forneça uma lista de 5 filmes recomendados, apenas títulos, um por linha.";
+                A lista de filmes disponíveis é: {string.Join(", ", limitedMovieList)}.
+                Por favor, recomende **5 filmes** da lista e explique por que eles foram escolhidos.
+            ";
 
+            // Mensagem do usuário
+            var userMessage = "Com base nas preferências fornecidas, quais filmes você recomenda? Forneça uma lista de 5 filmes com explicações curtas.";
+
+            // Criar o payload para a API OpenAI
             var requestBody = new
             {
                 model = "gpt-3.5-turbo",
@@ -123,16 +139,24 @@ namespace Reado.Api.Handlers
             new { role = "system", content = systemMessage },
             new { role = "user", content = userMessage }
         },
-                max_tokens = 250, // Aumentado para acomodar a resposta
+                max_tokens = 250, // Configuração para limitar o tamanho da resposta
                 temperature = 0.7
             };
 
             var jsonRequestBody = JsonConvert.SerializeObject(requestBody);
-            var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _openAiApiKey);
-            request.Headers.UserAgent.ParseAdd("SeuAppNome/1.0");
-            request.Content = new StringContent(jsonRequestBody, Encoding.UTF8, "application/json");
 
+            // Criar a requisição HTTP
+            var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
+            {
+                Headers =
+        {
+            Authorization = new AuthenticationHeaderValue("Bearer", _openAiApiKey),
+            UserAgent = { new ProductInfoHeaderValue("SeuAppNome", "1.0") }
+        },
+                Content = new StringContent(jsonRequestBody, Encoding.UTF8, "application/json")
+            };
+
+            // Enviar a requisição
             var response = await _httpClient.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
@@ -141,18 +165,24 @@ namespace Reado.Api.Handlers
                 throw new Exception($"Falha na requisição para OpenAI: {response.ReasonPhrase}. Detalhes: {errorContent}");
             }
 
+            // Processar a resposta
             var responseString = await response.Content.ReadAsStringAsync();
             JObject responseObject = JObject.Parse(responseString);
 
+            if (responseObject["choices"] == null || !responseObject["choices"].Any())
+            {
+                throw new Exception("A resposta da OpenAI não contém recomendações.");
+            }
+
             string recommendedText = responseObject["choices"][0]["message"]["content"].ToString();
 
-            // Exibir a resposta para depuração
             Console.WriteLine("Resposta do OpenAI:");
             Console.WriteLine(recommendedText);
 
+            // Transformar o texto em recomendações
             var recommendations = ParseRecommendations(recommendedText);
 
-            // Preencher campos adicionais
+            // Preencher campos adicionais em cada recomendação
             recommendations = recommendations.Select(r =>
             {
                 r.UserId = userId;
@@ -164,34 +194,52 @@ namespace Reado.Api.Handlers
         }
 
 
+
         // Método auxiliar para converter a resposta do OpenAI em uma lista de Recommendation
         private static List<Recommendation> ParseRecommendations(string responseText)
         {
             var recommendations = new List<Recommendation>();
-            var titlesSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase); // Usar HashSet para evitar duplicatas
 
-            // Dividir a resposta em linhas
-            var lines = responseText.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            // Dividir a resposta em blocos para cada filme
+            var movieBlocks = responseText.Split(new[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var line in lines)
+            foreach (var block in movieBlocks)
             {
-                // Remover possíveis caracteres de numeração e espaços
-                var title = line.Trim().TrimStart(new char[] { '-', '*', '•' }).Trim();
+                var lines = block.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToList();
 
-                // Remover numeração se houver
-                title = Regex.Replace(title, @"^\d+\.\s*", "");
-
-                if (!string.IsNullOrEmpty(title))
+                if (lines.Count > 0)
                 {
-                    // Adicionar ao conjunto e à lista se ainda não estiver presente
-                    if (titlesSet.Add(title))
+                    var recommendation = new Recommendation
                     {
-                        recommendations.Add(new Recommendation { PreferredTitles = title });
-                    }
+                        Title = lines.FirstOrDefault()?.Trim('1', '.', '2', '3', ':', '-').Trim() ?? "Título não disponível",
+                        Genres = ExtractField(lines, "Gêneros prioritários:"),
+                        Authors = ExtractField(lines, "Diretor preferido:"), // Adaptado para diretores (caso necessário)
+                        Explanation = ExtractFieldAsString(lines, "Explicação:") ?? "Nenhuma explicação fornecida."
+                    };
+
+                    recommendations.Add(recommendation);
                 }
             }
 
             return recommendations;
+        }
+
+        // Método auxiliar para extrair listas de campos (como gêneros ou diretores)
+        private static List<string> ExtractField(List<string> lines, string fieldPrefix)
+        {
+            var fieldLine = lines.FirstOrDefault(line => line.StartsWith(fieldPrefix));
+            if (!string.IsNullOrEmpty(fieldLine))
+            {
+                return fieldLine.Replace(fieldPrefix, "").Trim().Split(',').Select(item => item.Trim()).ToList();
+            }
+
+            return new List<string>();
+        }
+
+        // Método auxiliar para extrair uma string de campo único (como explicações)
+        private static string? ExtractFieldAsString(List<string> lines, string fieldPrefix)
+        {
+            return lines.FirstOrDefault(line => line.StartsWith(fieldPrefix))?.Replace(fieldPrefix, "").Trim();
         }
 
         public async Task<Response<Recommendation?>> GetByIdAsync(GetRecommendationByIdRequest request)
@@ -209,18 +257,24 @@ namespace Reado.Api.Handlers
 
         public async Task<Response<Recommendation?>> UpdateAsync(UpdateRecommendationRequest request)
         {
+            // Buscar a recomendação pelo ID
             var recommendation = await _context.Recommendations
-                .FirstOrDefaultAsync(r => r.UserId == request.UserId);
+                .FirstOrDefaultAsync(r => r.Id == request.Id);
 
             if (recommendation == null)
             {
-                return new Response<Recommendation?>(null, 200, message: "Recommendation not found.");
+                return new Response<Recommendation?>(null, 404, "Recommendation not found.");
             }
-            if (!string.IsNullOrEmpty(request.PreferredGenres))
-                recommendation.PreferredGenres = request.PreferredGenres;
 
-            if (!string.IsNullOrEmpty(request.PreferredAuthors))
-                recommendation.PreferredAuthors = request.PreferredAuthors;
+            // Atualizar campos apenas se fornecidos no request
+            if (request.Genres != null && request.Genres.Any())
+                recommendation.Genres = request.Genres;
+
+            if (request.Authors != null && request.Authors.Any())
+                recommendation.Authors = request.Authors;
+
+            if (!string.IsNullOrEmpty(request.Title))
+                recommendation.Title = request.Title;
 
             if (!string.IsNullOrEmpty(request.NotificationFrequency))
                 recommendation.NotificationFrequency = request.NotificationFrequency;
@@ -228,13 +282,14 @@ namespace Reado.Api.Handlers
             if (!string.IsNullOrEmpty(request.ContentTypes))
                 recommendation.ContentTypes = request.ContentTypes;
 
-            if (!string.IsNullOrEmpty(request.PreferredTitles))
-                recommendation.PreferredTitles = request.PreferredTitles;
+            if (!string.IsNullOrEmpty(request.Explanation))
+                recommendation.Explanation = request.Explanation;
 
+            // Atualizar o registro no banco de dados
             _context.Recommendations.Update(recommendation);
             await _context.SaveChangesAsync();
 
-            return new Response<Recommendation?>(recommendation, 200, message: "Recommendation updated successfully.");
+            return new Response<Recommendation?>(recommendation, 200, "Recommendation updated successfully.");
         }
 
     }

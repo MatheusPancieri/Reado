@@ -2,40 +2,52 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Reado.Domain.Entities;
 
-namespace Reado.Api.Data.Mappings
+namespace Reado.Api.Data.Mappings;
+
+public class RecommendationMapping : IEntityTypeConfiguration<Recommendation>
 {
-    public class RecommendationMapping : IEntityTypeConfiguration<Recommendation>
-    {
-        public void Configure(EntityTypeBuilder<Recommendation> builder)
-        {
-            // Set the table name (optional, Entity Framework uses the class name by default)
-            builder.ToTable("Recommendations");
+       public void Configure(EntityTypeBuilder<Recommendation> builder)
+       {
+              builder.HasKey(r => r.Id);
 
-            // Configure the primary key
-            builder.HasKey(r => r.Id);
+              builder.Property(r => r.UserId)
+                  .IsRequired()
+                  .HasMaxLength(255);
 
-            // Configure columns
-            builder.Property(r => r.Id)
-                   .ValueGeneratedOnAdd(); // Set as auto-incrementing
+              builder.Property(r => r.UserPreferenceId)
+                  .IsRequired();
 
-            builder.Property(r => r.UserId)
-                   .IsRequired()
-                   .HasMaxLength(50); // Set a maximum length for string columns if desired
+              builder.Property(r => r.Title)
+                  .IsRequired()
+                  .HasMaxLength(1000);
 
-            builder.Property(r => r.PreferredGenres)
-                   .HasMaxLength(200); // Optional length constraint
+              builder.Property(r => r.Genres)
+                  .HasConversion(
+                      genres => string.Join(",", genres), // Converter lista para string
+                      genres => genres.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList() // Converter string para lista
+                  )
+                  .HasMaxLength(500);
 
-            builder.Property(r => r.PreferredAuthors)
-                   .HasMaxLength(200);
+              builder.Property(r => r.Authors)
+                  .HasConversion(
+                      authors => string.Join(",", authors), // Converter lista para string
+                      authors => authors.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList() // Converter string para lista
+                  )
+                  .HasMaxLength(500);
 
-            builder.Property(r => r.NotificationFrequency)
-                   .HasMaxLength(50);
+              builder.Property(r => r.MovieList)
+                  .HasConversion(
+                      movies => string.Join(",", movies), // Converter lista para string
+                      movies => movies.Split(",", StringSplitOptions.RemoveEmptyEntries).ToList() // Converter string para lista
+                  )
+                  .HasMaxLength(1000);
 
-            builder.Property(r => r.ContentTypes)
-                   .HasMaxLength(100);
+              builder.Property(r => r.ContentTypes)
+                  .HasMaxLength(255);
 
-            // Add any indexes if necessary
-            builder.HasIndex(r => r.UserId); // Example index for UserId column
-        }
-    }
+              builder.Property(r => r.Explanation)
+                  .HasMaxLength(1000);
+
+              builder.ToTable("Recommendations");
+       }
 }

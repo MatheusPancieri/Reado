@@ -1,27 +1,29 @@
 using System.ComponentModel.DataAnnotations;
 using Reado.Domain.Entities;
-using Reado.Domain.Entities.Account;
 
 namespace Reado.Domain.Request.Recommendations;
 
 public class CreateRecommendationRequest : Request
 {
     public int UserPreferenceId { get; set; }
-    [Required(ErrorMessage = "UserPreference are required.")]
-    public UserPreference? UserPreference { get; set; } 
 
-    [Required(ErrorMessage = "Movie List are required.")]
-    public List<string> MovieList { get; set; } = [];
+    [Required(ErrorMessage = "UserPreference is required.")]
+    public UserPreference? UserPreference { get; set; }
 
-    [Required(ErrorMessage = "Preferred genres are required.")]
-    public string PreferredGenres { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Movie List is required.")]
+    public List<string> MovieList { get; set; } = new List<string>();
 
-    [Required(ErrorMessage = "Preferred titles are required.")]
-    public string PreferredTitles { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Title is required.")]
+    public string Title { get; set; } = string.Empty; // Título principal da recomendação
 
-    [Required(ErrorMessage = "Preferred authors are required.")]
-    public string PreferredAuthors { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Genres are required.")]
+    public List<string> Genres { get; set; } = new List<string>(); // Lista de gêneros
+
+    [Required(ErrorMessage = "Authors are required.")]
+    public List<string> Authors { get; set; } = new List<string>(); // Lista de autores
 
     [Required(ErrorMessage = "Content types are required.")]
     public string ContentTypes { get; set; } = string.Empty;
+
+    public string Explanation { get; set; } = string.Empty; // Campo opcional para justificativa
 }
